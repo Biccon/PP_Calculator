@@ -3,16 +3,16 @@ typedef struct stack Stack;
 
 struct stack
 {
-	char data[MAX];
+	double data[MAX];
 	int top;
 
 };
 
 int checkOp(char, char);
 void init_stack(Stack *s); //stack 초기화(-1)
-void push(Stack *s, char value); 
-char pop(Stack *s);
-char top(Stack *s); //스택의 맨 위 값 출력
+void push(Stack *s, double value); 
+double pop(Stack *s);
+double top(Stack *s); //스택의 맨 위 값 출력
 void print_stack(Stack *s); //스택의 상단부터 출력(하단부터로 바꿀수 있음)
 int size(Stack *s);
 int isEmpty(Stack *s);
@@ -23,7 +23,7 @@ void init_stack(Stack *s)
 	s->top= -1;
 }
 
-void push(Stack *s, char value)
+void push(Stack *s, double value)
 {
 	if (s->top >= MAX - 1)
 	{
@@ -33,7 +33,7 @@ void push(Stack *s, char value)
 
 }
 
-char pop(Stack *s)
+double pop(Stack *s)
 {
 	if (s->top < 0)
 	{
@@ -44,7 +44,7 @@ char pop(Stack *s)
 
 }
 
-char top(Stack *s)
+double top(Stack *s)
 {
 	if (s->top < 0)
 	{
@@ -72,7 +72,7 @@ void print_stack(Stack *s)
 	int i;
 	for (i = 0; i <s->top+1; i++)
 	{
-		printf("%c", s->data[i]);
+		printf("%lf", s->data[i]);
 	}
 	printf("\n");
 }
