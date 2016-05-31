@@ -26,7 +26,7 @@ char *inputExpression(){
 	}
 	int len = strlen(expression) - strlen(strstr(expression, "CAL"));
 	strncpy(expression, expression, len);
-	memset(expression+len, 0, sizeof(char) * 300 - len);
+	memset(expression+len, 0, sizeof(char) * 300 - len); // 식 뒤 부분을 null로 만들다
 	return expression; // 식 반환
 }
 
@@ -94,8 +94,6 @@ double calc(char *exp){
 					push(&stack, op1*op2);
 					break;
 				case '/':
-					//if(op2 == 0)
-					//	error("zero divide");
 					push(&stack, op1/op2);
 					break;
 			}
