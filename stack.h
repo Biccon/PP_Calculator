@@ -122,3 +122,23 @@ int ParenMatch(char *c)
 		return 0;
 	}
 }
+
+char *getExpression(char *exp){ // 괄호 열리는 곳부터 닫히는 곧 까지 구해오는 함수
+	/*
+		ex)
+		sin(1+ (2+3))
+		sin뒤의 (1+ (2+3))를 구해주는 함수
+	*/
+	int i;
+	int expLen = strlen(exp);
+	int flag = false;
+	char tok;
+	for(i=0; i < expLen; i++){
+		tok = exp[i];
+		if(flag == false && tok != '(')
+			continue;
+		else if(flag == false && tok == '('){
+			flag = true;
+		}
+	}
+}
