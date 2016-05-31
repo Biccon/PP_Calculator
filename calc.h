@@ -62,10 +62,12 @@ double calc(char *exp){
 		tok = exp[i];
 		if(tok == '|'){
 			char temp = exp[++i]; // 일단 temp에 |다음 문자하나를 넣어준다. 다음문자도 |이면 while을 들어가지 않음
-			char number[10] = "";
+			char number[30] = "";
 			while(temp != '|'){
-				char n[2];
+				char n[1];
 				sprintf(n, "%c", temp);
+				// 숫자를 문자열로 만들어야지 임시저장 number char배열에 strcat시켜줄 수 있다.
+				// 따라서 char n[2]를 만들고 거기에 sprintf를 이용하여 문자형으로 숫자를 저장
 				strcat(number, n);
 				//push(&stack, temp-'0');
 				printf("%s\n", number);
