@@ -48,8 +48,14 @@ double calc(char *exp){
 	Stack stack;
 	int expLen = strlen(exp);
 	int i;
-	char tok, op1, op2;
+	char tok; 
+	double op1, op2;
 	
+	// 연산을 위한 stack.
+	// 연산 기호도 정수형으로 나타나므로(char형) double로 나타난 값과 같을 수 있음을 이용하여
+	// 소숫점 연산을 위해 스택을 char형에서 double형으로 바꿈.
+	// 사실 double짜리 스택을 새로 만들 수도 있겠ㅇ지만 어짜피 char -> double로의 casting에는 문제가 없으므로
+	// 스택의 자료형을 double로 바꾼 것.
 	init_stack(&stack);
 
 	for(i=0; i<expLen; i++){
@@ -72,7 +78,9 @@ double calc(char *exp){
 			// tok == |이고 exp[i+1]도 바로 |인 경우가 있을 숭 ㅣㅆ나? 있으면 오류
 		} else {
 			op2 = pop(&stack);
+			printf("op2 : %lf\n", op2);
 			op1 = pop(&stack);
+			printf("op1 : %lf\n", op1);
 
 			switch(tok){
 				case '+':
