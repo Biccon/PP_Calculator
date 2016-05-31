@@ -45,7 +45,54 @@ char *assignExpression(char *exp){
 }
 
 double calc(char *exp){
-	return 1;//PI + 44;
+	Stack stack;
+	int expLen = strlen(exp);
+	int i;
+	char tok, op1, op2;
+	
+	init_stack(&stack);
+
+	for(i=0; i<expLen; i++){
+		tok = exp[i];
+		if(tok == '|'){
+			char temp = exp[++i]; // 일단 temp에 |다음 문자하나를 넣어준다. 다음문자도 |이면 while을 들어가지 않음
+			char number[10] = "";
+			while(temp != '|'){
+				char n[2];
+				sprintf(n, "%c", temp);
+				strcat(number, n);
+				//push(&stack, temp-'0');
+				printf("%s\n", number);
+				i++;
+				temp = exp[i];
+			}
+			printf("%s\n", number);
+			printf("%lf\n", atof(number));
+			push(&stack, atof(number));
+			// tok == |이고 exp[i+1]도 바로 |인 경우가 있을 숭 ㅣㅆ나? 있으면 오류
+		} else {
+			op2 = pop(&stack);
+			op1 = pop(&stack);
+
+			switch(tok){
+				case '+':
+					push(&stack, op1+op2);
+					break;
+				case '-':
+					push(&stack, op1-op2);
+					break;
+				case '*':
+					push(&stack, op1*op2);
+					break;
+				case '/':
+					//if(op2 == 0)
+					//	error("zero divide");
+					push(&stack, op1/op2);
+					break;
+			}
+		}
+	}
+	return pop(&stack);
 }
 
 double calculate(char *operator, char *expression){

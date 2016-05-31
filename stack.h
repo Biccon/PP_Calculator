@@ -60,7 +60,7 @@ int size(Stack *s)
 
 int isEmpty(Stack *s)
 {
-	if (s->top == -1)
+	if (s->top < 0)
 	{
 		return 1;
 	}
@@ -89,6 +89,7 @@ int ParenMatch(char *c)
 {
 	int i;
 	Stack *a = (Stack *)calloc(sizeof(Stack), 1);
+	init_stack(a);
 	for (i = 0; i < strlen(c); i++)
 	{
 		if (c[i] == '(' || c[i] == '[')
