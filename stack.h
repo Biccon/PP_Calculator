@@ -134,24 +134,27 @@ char *getExpression(char *exp){ // 괄호 열리는 곳부터 닫히는 곧 까�
 	init_stack(&s);
 	int i;
 	int expLen = strlen(exp);
-	int flag = false;
+	int flag = 0;
 	char tok;
 	for(i=0; i < expLen; i++){
 		tok = exp[i];
-		if(flag == false && tok != '(')
+		if(flag == 0 && tok != '(')
 			continue;
-		else if(flag == false && tok == '('){
-			flag = true;
+		else if(flag == 0 && tok == '('){
+			flag = 1;
 			push(&s, tok);
-			sprintf(tempExp, "%c", tok);
+			sprintf(tempExp + strlen(tempExp), "%c", tok);
 		} else {
+			printf("DD : %c\n", tok);
+			if(isEmpty(&s))
+				break;
 			if(tok == ')'){
-				if(isEmpty(&s)) // )가 나왔는데 s Stack이 비어있으면 최소한의 expression 괄호는 끝났다는 것!
-					break; // 따라서 break;
-				sprintf(tempExp, "%c", pop(&s));
+				pop(&s);
+				sprintf(tempExp + strlen(tempExp), ")");
 			} else {
-				sprintf(tempExp, "%c", tok);
+				sprintf(tempExp + strlen(tempExp), "%c", tok);
 			}
 		}
 	}
+	return tempExp;
 }
