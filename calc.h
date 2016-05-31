@@ -69,7 +69,6 @@ double calc(char *exp){
 				// 숫자를 문자열로 만들어야지 임시저장 number char배열에 strcat시켜줄 수 있다.
 				// 따라서 char n[2]를 만들고 거기에 sprintf를 이용하여 문자형으로 숫자를 저장
 				strcat(number, n);
-				//push(&stack, temp-'0');
 				printf("%s\n", number);
 				i++;
 				temp = exp[i];
