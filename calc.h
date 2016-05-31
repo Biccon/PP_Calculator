@@ -122,14 +122,13 @@ char *replaceExpression(char *exp){
 	temp = strtok(find, "/");
 	while(temp){
 		char *split = (char *)malloc(sizeof(char) * 100);
-		//while(
-		/*
 		split = strtok(tempExp, temp);
 		while(split){
+			
 			printf("%s\n", split);
 			split = strtok(NULL, temp);
 		}
-		*/
+		
 		free(split);
 		temp = strtok(NULL, "/");
 	}
