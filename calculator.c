@@ -56,9 +56,13 @@ int main(int argc, char **argv){
 	char *exp;
 	exp = inputExpression();
 	if(errorCheck(exp)){
+		//printf("%s\n", exp);
+		exp = replaceExpression(exp);
+		//printf("%s\n", exp);
+
 		//exp = postfix(exp);
-		char *temp = getExpression(exp);
-		printf("%s\n", temp);
+		//char *temp = getExpression(exp);
+		//printf("%s\n", temp);
 //		printf("Result : %lf\n", calc(exp));
 	} else {
 		printf("에러\n");

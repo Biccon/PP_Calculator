@@ -145,7 +145,6 @@ char *getExpression(char *exp){ // 괄호 열리는 곳부터 닫히는 곧 까�
 			push(&s, tok);
 			sprintf(tempExp + strlen(tempExp), "%c", tok);
 		} else {
-			printf("DD : %c\n", tok);
 			if(isEmpty(&s))
 				break;
 			if(tok == ')'){

@@ -124,13 +124,15 @@ char *replaceExpression(char *exp){
 		char *split = (char *)malloc(sizeof(char) * 100);
 		
 		split = strtok(tempExp, temp);
+		if(split)
+			split = strtok(NULL, temp); // sin 뒤에 있는거 있어야하니깐..~
 		while(split){
-				
-			printf("%s\n", split);
+			printf("Exp : %s\n", getExpression(split));
+		//	printf("%s\n", split);
 			split = strtok(NULL, temp);
 		}
-		
-		free(split);
+		//free(split);
 		temp = strtok(NULL, "/");
 	}
+	return tempExp;
 }
