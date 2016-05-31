@@ -24,6 +24,9 @@ char *inputExpression(){
 		if(isCal == NULL || isCal > isExit) // CAL이 입력되어있지 않거나, EXIT가 CAL보다 앞에 있는 경우
 			return "EXIT"; // EXIT리턴
 	}
+	int len = strlen(expression) - strlen(strstr(expression, "CAL"));
+	strncpy(expression, expression, len);
+	memset(expression+len, 0, sizeof(char) * 300 - len);
 	return expression; // 식 반환
 }
 

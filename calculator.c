@@ -10,6 +10,7 @@ int main(){
 	temp = inputExpression();
 	printf("%d\n", ParenMatch(temp));
 	//assignExpression(temp);
-//	printf("%s\n", postfix(temp));
-	//replaceExpression(temp);
+	printf("%s\n", postfix(temp));
+	replaceExpression(temp);
+	printf("%s\n", temp);
 }

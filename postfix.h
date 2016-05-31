@@ -17,9 +17,19 @@ char *postfix(char *exp){
 	init_stack(&stack);
 	for(i=0; i<expLen; i++){
 		tok = exp[i];
-		if('0' <= tok && tok <= '9' || tok == '.')
-			postfix[idx++] = tok;
-		else {
+		printf("%c\n", tok);
+		if('0' <= tok && tok <= '9'){// 숫자가 나오면
+			postfix[idx++] = '|'; // 그자리에 |를 넣어서 숫자임을 구분하자
+			int temp = tok; //현재 숫자를 temp에넣어두고
+			while('0' <= temp && temp <= '9' || temp == '.'){
+				postfix[idx++] = temp;
+				printf("%s\n", postfix);
+				i++; // 다음숫자로 넘어가기 위해서
+				temp = exp[i];
+			}
+			postfix[idx++] = '|';
+			i--; // while에서 i++하고 for에서 i++해주면 두번 커지므로 연산자가 씹힘 따라서 i--해줘야 딱 적당!
+		} else {
 			switch(tok){
 				case '(':
 					push(&stack, tok);
@@ -36,8 +46,9 @@ char *postfix(char *exp){
 				case '-':
 				case '*':
 				case '/':
-					while(!isEmpty(&stack) && cmpOpPriority(top(&stack), tok) >= 0)
+					while(!isEmpty(&stack) && cmpOpPriority(top(&stack), tok) >= 0){
 						postfix[idx++] = pop(&stack);
+					}
 					push(&stack, tok);
 					break;
 			}

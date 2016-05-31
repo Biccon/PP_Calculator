@@ -62,7 +62,7 @@ void size(Stack *s)
 
 int isEmpty(Stack *s)
 {
-	if (s->top <= 0)
+	if (s->top == -1)
 	{
 		return 1;
 	}
