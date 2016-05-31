@@ -9,6 +9,6 @@ int main(){
 	char *temp;
 	temp = inputExpression();
 	//splitExpression(temp);
-	
+	printf("%s\n", postfix(temp));
 	replaceExpression(temp);
 }
