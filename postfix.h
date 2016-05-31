@@ -17,13 +17,11 @@ char *postfix(char *exp){
 	init_stack(&stack);
 	for(i=0; i<expLen; i++){
 		tok = exp[i];
-		printf("%c\n", tok);
 		if('0' <= tok && tok <= '9'){// 숫자가 나오면
 			postfix[idx++] = '|'; // 그자리에 |를 넣어서 숫자임을 구분하자
 			int temp = tok; //현재 숫자를 temp에넣어두고
 			while('0' <= temp && temp <= '9' || temp == '.'){
 				postfix[idx++] = temp;
-				printf("%s\n", postfix);
 				i++; // 다음숫자로 넘어가기 위해서
 				temp = exp[i];
 			}
