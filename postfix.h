@@ -53,7 +53,7 @@ int cmpOpPriority(char op1, char op2){
 	int op1Prec = getOpPriority(op1);
 	int op2Prec = getOpPriority(op2);
 
-	int(op1Prec > op2Prec)
+	if(op1Prec > op2Prec)
 		return 1;
 	else if(op1Prec < op2Prec)
 		return -1;
