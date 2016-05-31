@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#define PI 3.141592653586
-
+#include "head.h"
 char *inputExpression();
 char *splitExpression(char *exp);
 char *inputExpression(){
@@ -23,11 +18,11 @@ char *inputExpression(){
 			break;
 		}
 	}
-	if(isExit != NULL){
-		if(isCal == NULL || isCal > isExit)
-			return "EXIT";
+	if(isExit != NULL){ // Exit가 입력 받아졌고
+		if(isCal == NULL || isCal > isExit) // CAL이 입력되어있지 않거나, EXIT가 CAL보다 앞에 있는 경우
+			return "EXIT"; // EXIT리턴
 	}
-	return expression;	//printf("%s\n", expression);`// while문 종료 후 수식 오류 확인
+	return expression; // 식 반환
 }
 
 char *splitExpression(char *exp){
@@ -60,14 +55,32 @@ double calculate(char *operator, char *expression){
 	}
 }
 
-void replaceExpression(char *exp){
-	
+char *replaceExpression(char *exp){
+	char *tempExp = (char *)calloc(sizeof(char), 300);
+	char find[] = "sin/cos/exp/log";
+	char *temp = (char *)malloc(sizeof(char) * 3);
+	strcpy(tempExp, exp);
+	temp = strtok(find, "/");
+	while(temp){
+		printf("%s\n", temp);
+		char *split = (char *)malloc(sizeof(char) * 100);
+		while(
+		/*
+		split = strtok(tempExp, temp);
+		while(split){
+			printf("%s\n", split);
+			split = strtok(NULL, temp);
+		}
+		*/
+		free(split);
+		temp = strtok(NULL, "/");
+	}
 }
 
 int main(){
 	char *temp;
 	temp = inputExpression();
-	temp = splitExpression(temp);
-	char input[30];
-	printf("%lf", calculate("exp", "1+3"));
+	//splitExpression(temp);
+	
+	replaceExpression(temp);
 }
