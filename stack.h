@@ -14,7 +14,7 @@ void push(Stack *s, char value);
 char pop(Stack *s);
 char top(Stack *s); //스택의 맨 위 값 출력
 void print_stack(Stack *s); //스택의 상단부터 출력(하단부터로 바꿀수 있음)
-void size(Stack *s);
+int size(Stack *s);
 int isEmpty(Stack *s);
 int ParenMatch(char *c);
 
@@ -27,7 +27,7 @@ void push(Stack *s, char value)
 {
 	if (s->top >= MAX - 1)
 	{
-		printf("Stack Overflow\n");
+		return ;
 	}
 	s->data[++s->top] = value;
 
@@ -37,7 +37,6 @@ char pop(Stack *s)
 {
 	if (s->top < 0)
 	{
-		printf("Stack Underflow\n");
 		return 0;
 	}
 	s->data[s->top--];
@@ -49,15 +48,14 @@ char top(Stack *s)
 {
 	if (s->top < 0)
 	{
-		printf("Stack Underflow\n");
+		return 0;
 	}
 	return s->data[s->top];
 }
 
-void size(Stack *s)
+int size(Stack *s)
 {
-	printf("Stack size : %d\n", s->top+1);
-
+	return s -> top + 1;
 }
 
 int isEmpty(Stack *s)
@@ -78,6 +76,7 @@ void print_stack(Stack *s)
 	}
 	printf("\n");
 }
+
 int checkOp(char op1, char op2){
 	if(op1 == '(')
 		return op2 == ')';
@@ -85,6 +84,7 @@ int checkOp(char op1, char op2){
 		return op2 == ']';
 	return 0;
 }
+
 int ParenMatch(char *c)
 {
 	int i;
