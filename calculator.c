@@ -1,4 +1,10 @@
-#include "head.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "stack.h"
+#include "postfix.h"
+#include "calc.h"
+#define PI 3.14159
 char *inputExpression();
 char *splitExpression(char *exp);
 char *inputExpression(){
