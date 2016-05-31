@@ -129,6 +129,9 @@ char *getExpression(char *exp){ // 괄호 열리는 곳부터 닫히는 곧 까�
 		sin(1+ (2+3))
 		sin뒤의 (1+ (2+3))를 구해주는 함수
 	*/
+	char *tempExp = (char *)calloc(sizeof(char), 300);
+	Stack s; // ( add and push
+	init_stack(&s);
 	int i;
 	int expLen = strlen(exp);
 	int flag = false;
@@ -139,6 +142,16 @@ char *getExpression(char *exp){ // 괄호 열리는 곳부터 닫히는 곧 까�
 			continue;
 		else if(flag == false && tok == '('){
 			flag = true;
+			push(&s, tok);
+			sprintf(tempExp, "%c", tok);
+		} else {
+			if(tok == ')'){
+				if(isEmpty(&s)) // )가 나왔는데 s Stack이 비어있으면 최소한의 expression 괄호는 끝났다는 것!
+					break; // 따라서 break;
+				sprintf(tempExp, "%c", pop(&s));
+			} else {
+				sprintf(tempExp, "%c", tok);
+			}
 		}
 	}
 }
