@@ -145,14 +145,14 @@ char *getExpression(char *exp){ // 괄호 열리는 곳부터 닫히는 곧 까�
 			push(&s, tok);
 			sprintf(tempExp + strlen(tempExp), "%c", tok);
 		} else {
-			if(isEmpty(&s))
-				break;
 			if(tok == ')'){
-				pop(&s);
 				sprintf(tempExp + strlen(tempExp), ")");
+				pop(&s);
 			} else {
 				sprintf(tempExp + strlen(tempExp), "%c", tok);
 			}
+			if(isEmpty(&s))
+				break;
 		}
 	}
 	return tempExp;
