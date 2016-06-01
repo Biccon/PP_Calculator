@@ -144,6 +144,9 @@ char *getExpression(char *exp){ // 괄호 열리는 곳부터 닫히는 곧 까�
 			flag = 1;
 			push(&s, tok);
 			sprintf(tempExp + strlen(tempExp), "%c", tok);
+		} else if(flag != 00 && tok == '('){
+			push(&s, tok);
+			sprintf(tempExp + strlen(tempExp), "%c", tok);
 		} else {
 			if(tok == ')'){
 				sprintf(tempExp + strlen(tempExp), ")");
@@ -155,5 +158,35 @@ char *getExpression(char *exp){ // 괄호 열리는 곳부터 닫히는 곧 까�
 				break;
 		}
 	}
+	if(isEmpty(&s) == 0){
+		tempExp = tempExp + size(&s);
+	}
 	return tempExp;
+}
+
+int getIndexOutOfExpression(char *exp){
+	Stack s;
+	init_stack(&s);
+	int i;
+	int expLen = strlen(exp);
+	int flag = 0;
+	char tok;
+	for(i=0; i<expLen; i++){
+		tok = exp[i];
+		if(flag == 0 && tok != '(')
+			continue;
+		else if(flag == 0 && tok == '('){
+			flag = 1;
+			push(&s, tok);
+		} else if(flag != 0 && tok == '('){
+			push(&s, tok);
+		} else {
+			if(tok == ')'){
+				pop(&s);
+			}
+			if(isEmpty(&s))
+				return i+1;
+		}
+	}
+	return 0;
 }

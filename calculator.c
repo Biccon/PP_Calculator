@@ -31,6 +31,7 @@ int isDivZero(char *exp){ //바꾸기 전 expression을 검사하는 함수
 				i++;
 				temp = exp[i]; // i++
 			}
+			printf("s%s\n", number);
 			double totalNum = atof(number);
 			if(totalNum == 0)
 				return true;
@@ -45,9 +46,12 @@ int errorCheck(char *exp){
 	int p = ParenMatch(exp);
 	if(p == false) // matching이 false하면
 		return false; // 실패
-	int divZero = isDivZero(exp);
-	if(divZero == true) // div by zero이 true이면
-		return false; // 실패
+	// divZero는 식이 변환 된 후에 구해야 함
+	// 변환되지 않은 식에서는 [x]이나 sin/cos/log/exp와 같은 식이 있으므로
+	// replaceExpression이후에 divZero 오류 검사를 해줘야 할 것
+	//int divZero = isDivZero(exp);
+	//if(divZero == true) // div by zero이 true이면
+	//	return false; // 실패
 	// 
 	return true;
 }
@@ -55,6 +59,9 @@ int errorCheck(char *exp){
 int main(int argc, char **argv){
 	char *exp;
 	exp = inputExpression();
+//	exp = postfix(exp);
+//	printf("%lf\n", calc(exp));
+	printf("%s\n", exp);
 	if(errorCheck(exp)){
 		//printf("%s\n", exp);
 		exp = replaceExpression(exp);

@@ -69,17 +69,16 @@ double calc(char *exp){
 				// 숫자를 문자열로 만들어야지 임시저장 number char배열에 strcat시켜줄 수 있다.
 				// 따라서 char n[2]를 만들고 거기에 sprintf를 이용하여 문자형으로 숫자를 저장
 				strcat(number, n);
-				printf("%s\n", number);
 				i++;
 				temp = exp[i];
 			}
-			printf("%s\n", number);
-			printf("%lf\n", atof(number));
 			push(&stack, atof(number));
 			// tok == |이고 exp[i+1]도 바로 |인 경우가 있을 숭 ㅣㅆ나? 있으면 오류
 		} else {
 			op2 = pop(&stack);
 			printf("op2 : %lf\n", op2);
+			if(size(&stack) == 0)
+				printf("+[x] 와 같은 식\n");
 			op1 = pop(&stack);
 			printf("op1 : %lf\n", op1);
 
@@ -116,23 +115,31 @@ double calculate(char *operator, char *expression){
 
 char *replaceExpression(char *exp){
 	char *tempExp = (char *)calloc(sizeof(char), 300);
-	char find[] = "sin/cos/exp/log";
-	char *temp = (char *)malloc(sizeof(char) * 3);
-	strcpy(tempExp, exp);
-	temp = strtok(find, "/");
-	while(temp){
-		char *split = (char *)malloc(sizeof(char) * 100);
-		int count = 0;
-		split = strtok(tempExp, temp);
-		while(split){
-			printf("SS %s\n", split);
-			printf("Exp : %s\n", getExpression(split));
-		//	printf("%s\n", split);
-			split = strtok(NULL, temp);
-		}
 
-		//free(split);
-		temp = strtok(NULL, "/");
+	char find[] = "sin/cos/exp/log"; // 차례대로 나누어서 sin... log까지에 대한 결과값을 계산해줄것
+	//아 잠깐.. 섞여있을 때는? 어짜피 재귀적으로 호출하므로 상관 없을것 같다
+	char *oper = strtok(find, "/"); // 찾아줄 operator들을 strtok로 구분지어 하나씩 찾아주자
+	while(oper){
+		char *subExp; // 현재 찾고있는 oper의 뒷부분을 변경해 줄 것이다
+		while((subExp = strstr(tempExp, oper))){ // strstr을 이용해 subExp에서 가리킨다
+			printf("sub : %s\n", subExp);
+			char *op = (char *)calloc(sizeof(char), 3); // 어짜피 3글자씩이니까 숫자 고정
+			strncpy(op, subExp, 3); // 마찬가지
+
+			char *formula = (char *)calloc(sizeof(char), 100);
+			formula = replaceExpression(formula);
+			formula = postfix(formula);
+
+			double result = calculate(op, formula);
+
+			int tmpIndex = getIndexOutOfExpression(subExp);
+			char *remainExp = subExp + tmpIndex;//괄호 뒤의 식
+			memset(subExp, 0, tmpIndex);
+			sprintf(subExp, "%lf", result);
+			sprintf(subExp, "%s", remainExp);
+
+			printf("fuck~ : %s\n", subExp);
+		}
+		oper = strtok(NULL, "/");
 	}
-	return tempExp;
 }
