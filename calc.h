@@ -125,10 +125,12 @@ char *replaceExpression(char *exp){
 		int count = 0;
 		split = strtok(tempExp, temp);
 		while(split){
+			printf("SS %s\n", split);
 			printf("Exp : %s\n", getExpression(split));
 		//	printf("%s\n", split);
 			split = strtok(NULL, temp);
 		}
+
 		//free(split);
 		temp = strtok(NULL, "/");
 	}
