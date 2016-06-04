@@ -1,14 +1,16 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "stack.h"
-#include "postfix.h"
-#include "calc.h"
-#define PI 3.14159265359
 #define TRUE true
 #define FALSE false
 #define true 1
 #define false 0
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "stack.h"
+#include "error.h"
+#include "postfix.h"
+#include "calc.h"
+#define PI 3.14159265359
 
 int isDivZero(char *exp){ //바꾸기 전 expression을 검사하는 함수
 	int expLen = strlen(exp);
@@ -31,7 +33,7 @@ int isDivZero(char *exp){ //바꾸기 전 expression을 검사하는 함수
 				i++;
 				temp = exp[i]; // i++
 			}
-			printf("s%s\n", number);
+			printf("%s\n", number);
 			double totalNum = atof(number);
 			if(totalNum == 0)
 				return true;
@@ -46,6 +48,12 @@ int errorCheck(char *exp){
 	int p = ParenMatch(exp);
 	if(p == false) // matching이 false하면
 		return false; // 실패
+	int r = isExpRight(exp);
+	if(r == false)
+		return false;
+	int h = hasOperatorBetweenNumber(exp);
+	if(h == false)
+		return false;
 	// divZero는 식이 변환 된 후에 구해야 함
 	// 변환되지 않은 식에서는 [x]이나 sin/cos/log/exp와 같은 식이 있으므로
 	// replaceExpression이후에 divZero 오류 검사를 해줘야 할 것
@@ -61,19 +69,21 @@ int main(int argc, char **argv){
 	exp = inputExpression();
 //	exp = postfix(exp);
 //	printf("%lf\n", calc(exp));
-	printf("%s\n", exp);
-	if(errorCheck(exp)){
+	//printf("%s\n", exp);
+	//if(errorCheck(exp)){
 		//printf("%s\n", exp);
 		exp = replaceExpression(exp);
-		//printf("%s\n", exp);
-
-		//exp = postfix(exp);
+		if(strcmp(exp, "divZero") == 0){
+			printf("divZero\n");
+			exit(1);
+		}
+		exp = postfix(exp);
 		//char *temp = getExpression(exp);
 		//printf("%s\n", temp);
-//		printf("Result : %lf\n", calc(exp));
-	} else {
-		printf("에러\n");
-	}
+		printf("%lf\n", calc(exp));
+//	} else {
+//		printf("에러\n");
+//	}
 	//printf("%d\n", ParenMatch(temp));
 	//assignExpression(temp);
 	//printf("%s\n", postfix(temp));

@@ -1,3 +1,4 @@
+#include <math.h>
 char *inputExpression();
 char *assignExpression(char *exp);
 double calc(char *exp);
@@ -76,11 +77,7 @@ double calc(char *exp){
 			// tok == |이고 exp[i+1]도 바로 |인 경우가 있을 숭 ㅣㅆ나? 있으면 오류
 		} else {
 			op2 = pop(&stack);
-			printf("op2 : %lf\n", op2);
-			if(size(&stack) == 0)
-				printf("+[x] 와 같은 식\n");
 			op1 = pop(&stack);
-			printf("op1 : %lf\n", op1);
 
 			switch(tok){
 				case '+':
@@ -102,44 +99,55 @@ double calc(char *exp){
 }
 
 double calculate(char *operator, char *expression){
+	double result = calc(expression);
 	if(strcmp(operator, "sin") == 0){
-		return sin(calc(expression));
+		return sin(result);
 	} else if(strcmp(operator, "cos") == 0){
-		return cos(calc(expression));
+		return cos(result);
 	} else if(strcmp(operator, "exp") == 0){
-		return exp(calc(expression));
+		return exp(result);
 	} else if(strcmp(operator, "log") == 0){
-		return log(calc(expression));
+		return log(result);
 	}
 }
 
 char *replaceExpression(char *exp){
 	char *tempExp = (char *)calloc(sizeof(char), 300);
+	strcpy(tempExp, exp);
 
 	char find[] = "sin/cos/exp/log"; // 차례대로 나누어서 sin... log까지에 대한 결과값을 계산해줄것
-	//아 잠깐.. 섞여있을 때는? 어짜피 재귀적으로 호출하므로 상관 없을것 같다
+	
 	char *oper = strtok(find, "/"); // 찾아줄 operator들을 strtok로 구분지어 하나씩 찾아주자
 	while(oper){
 		char *subExp; // 현재 찾고있는 oper의 뒷부분을 변경해 줄 것이다
 		while((subExp = strstr(tempExp, oper))){ // strstr을 이용해 subExp에서 가리킨다
-			printf("sub : %s\n", subExp);
 			char *op = (char *)calloc(sizeof(char), 3); // 어짜피 3글자씩이니까 숫자 고정
 			strncpy(op, subExp, 3); // 마찬가지
-
-			char *formula = (char *)calloc(sizeof(char), 100);
-			formula = replaceExpression(formula);
-			formula = postfix(formula);
-
-			double result = calculate(op, formula);
-
+			
 			int tmpIndex = getIndexOutOfExpression(subExp);
-			char *remainExp = subExp + tmpIndex;//괄호 뒤의 식
-			memset(subExp, 0, tmpIndex);
-			sprintf(subExp, "%lf", result);
-			sprintf(subExp, "%s", remainExp);
-
-			printf("fuck~ : %s\n", subExp);
+			char *formula = (char *)calloc(sizeof(char), 100);
+			formula = getExpression(subExp);	
+			formula = replaceExpression(formula);
+			printf("식변환 %s\n", formula);
+			//int r = isExpRight(formula);
+			//printf("r : %d\n", r);
+			int h = hasOperatorBetweenNumber(exp);
+			printf("h : %d\n", h);
+			printf("이프문 끝\n");
+			printf("%s\n", formula);
+			formula = postfix(formula);
+			double result = calculate(op, formula);
+			
+			char *lastExp = (char *)calloc(sizeof(char), 100);
+			strcpy(lastExp, subExp + tmpIndex);
+			memset(subExp, 0, strlen(subExp));
+			sprintf(subExp, "(%lf)%s", result, lastExp);
+			
+			free(op);
+			free(formula);
+			free(lastExp);
 		}
 		oper = strtok(NULL, "/");
 	}
+	return tempExp;
 }
