@@ -39,6 +39,7 @@ char *assignExpression(char *exp){
 		strncpy(tempList[0], tempExp, temp);
 		strncpy(tempList[1], tempExp + temp + strlen("->"), 3);
 		tempExp = tempExp + temp + strlen("->") + 3;
+		printf("%s %s", tempList[0], tempList[1]);
 		// register에 assign해주면 끝
 		// 
 		//tempExp = NULL;//temp;
