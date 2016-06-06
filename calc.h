@@ -130,9 +130,9 @@ char *replaceExpression(char *exp){
 			formula = getExpression(subExp);	
 			formula = replaceExpression(formula);
 			printf("식변환 %s\n", formula);
-			//int r = isExpRight(formula);
-			//printf("r : %d\n", r);
-			int h = hasOperatorBetweenNumber(exp);
+			int r = isExpRight(formula);
+			printf("r : %d\n", r);
+			int h = hasOperatorBetweenNumber(formula);
 			printf("h : %d\n", h);
 			printf("이프문 끝\n");
 			printf("%s\n", formula);
