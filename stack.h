@@ -158,9 +158,7 @@ char *getExpression(char *exp){ // 괄호 열리는 곳부터 닫히는 곧 까�
 			}
 		}
 	}
-	if(isEmpty(&s) == 0){
-		tempExp = tempExp + size(&s);
-	}
+	strncpy(tempExp, tempExp + 1, strlen(tempExp) - 2);
 	return tempExp;
 }
 
