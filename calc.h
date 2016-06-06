@@ -153,19 +153,12 @@ char *replaceExpression(char *exp){
 			formula = replaceExpression(formula);
 			
 			printf("식변환 |%s|\n", formula);
-			if(strcmp(formula, "") == 0)
+			
+			if(strcmp(formula, "") == 0 || strcmp(formula, "()") == 0) // 뒤에 ()가 없거나 () 안에 식이 들어있지 않을 경우 error
 				return "error";
-			if(hasError(formula))
+			else if(hasError(formula))
 				return "error";
 			printf("오류체크\n");
-			/*
-			if(isExpRight(formula) == false){
-				return "error 1";
-			}
-			if(hasOperatorBetweenNumber(formula) == false){
-				return "error 2";
-			}
-			*/
 			formula = postfix(formula);
 			double result = calculate(op, formula);
 			
@@ -173,10 +166,6 @@ char *replaceExpression(char *exp){
 			strcpy(lastExp, subExp + tmpIndex);
 			memset(subExp, 0, strlen(subExp));
 			sprintf(subExp, "(%lf)%s", result, lastExp);
-			
-//			free(op);
-//			free(formula);
-//			free(lastExp);
 		}
 		oper = strtok(NULL, "/");
 	}
