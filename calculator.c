@@ -27,6 +27,7 @@ int main(int argc, char **argv){
 				exp = assignExpression(exp); // 를 해준 뒤에 할당 오류가 발생하지 않았는지 check
 				
 			*/
+			exp = assignExpression(exp);
 			exp = replaceExpression(exp);
 			printf("%d %d %d\n", isExpRight(exp), hasOperatorBetweenNumber(exp), isDivZero(exp));
 			if(hasError(exp)){
