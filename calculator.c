@@ -12,6 +12,34 @@
 #include "calc.h"
 #define PI 3.14159265359
 
+void trim(char *input)
+{
+   char *dst = input, *src = input;
+   char *end;
+
+   // Skip whitespace at front...
+   //
+   while (isspace((unsigned char)*src))
+   {
+      ++src;
+   }
+
+   // Trim at end...
+   //
+   end = src + strlen(src) - 1;
+   while (end > src && isspace((unsigned char)*end))
+   {
+      *end-- = 0;
+   }
+
+   // Move if needed.
+   //
+   if (src != dst)
+   {
+      while ((*dst++ = *src++));
+   }
+}
+
 int isDivZero(char *exp){ //바꾸기 전 expression을 검사하는 함수
 	int expLen = strlen(exp);
 	int i;
@@ -43,37 +71,23 @@ int isDivZero(char *exp){ //바꾸기 전 expression을 검사하는 함수
 	return false;
 }
 
-int errorCheck(char *exp){
-	// 
-	int p = ParenMatch(exp);
-	if(p == false) // matching이 false하면
-		return false; // 실패
-	int r = isExpRight(exp);
-	if(r == false)
-		return false;
-	int h = hasOperatorBetweenNumber(exp);
-	if(h == false)
-		return false;
-	// divZero는 식이 변환 된 후에 구해야 함
-	// 변환되지 않은 식에서는 [x]이나 sin/cos/log/exp와 같은 식이 있으므로
-	// replaceExpression이후에 divZero 오류 검사를 해줘야 할 것
-	//int divZero = isDivZero(exp);
-	//if(divZero == true) // div by zero이 true이면
-	//	return false; // 실패
-	// 
-	return true;
+int hasError(char *exp){
+	return !(isExpRight(exp) && hasOperatorBetweenNumber(exp) && !isDivZero(exp));
 }
+
 
 int main(int argc, char **argv){
 	char *exp;
 	exp = inputExpression();
+	trim(exp); 
 	if(!ParenMatch(exp)){
 		printf("괄호 쌍이 맞지 않음\n");
 	} else {
+//		exp = assignExpression(exp);
 		exp = replaceExpression(exp);
 		printf("%s\n", exp);
 		printf("%d %d %d\n", isExpRight(exp), hasOperatorBetweenNumber(exp), isDivZero(exp));
-		if(isExpRight(exp) && hasOperatorBetweenNumber(exp) && !isDivZero(exp)){
+		if(!hasError(exp)){
 			exp = postfix(exp);
 			printf("결과값 = %lf\n", calc(exp));
 		} else {
