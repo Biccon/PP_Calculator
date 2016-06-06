@@ -5,6 +5,24 @@ char *assignExpression(char *exp);
 double calc(char *exp);
 double calculate(char *operator, char *expression);
 char *replaceExpression(char *exp);
+double stringToDouble(char *exp);
+char *substr(const char* input, int offset, int len);
+
+double stringToDouble(char *exp){
+	return atof(exp);
+}
+
+char* substr (const char* input, int offset, int len) {
+	char *dest = (char*)malloc(sizeof(char) * (strlen(input)+1));
+	int input_len = strlen (input);
+
+	if (offset + len > input_len){
+		return NULL;
+	}
+
+	strncpy (dest, input + offset, len);
+	return dest;
+}
 
 char *trim(char *input) {
 	char *dst = input, *src = input;
@@ -151,7 +169,8 @@ char *replaceExpression(char *exp){
 			
 			int tmpIndex = getIndexOutOfExpression(subExp);
 			char *formula = (char *)calloc(sizeof(char), 100);
-			formula = getExpression(subExp);	
+			formula = getExpression(subExp);
+			printf("getE : %s\n", formula);
 			formula = replaceExpression(formula);
 			
 			printf("식변환 |%s|\n", formula);
@@ -161,13 +180,13 @@ char *replaceExpression(char *exp){
 			else if(hasError(formula))
 				return "error";
 			else if(strcmp(oper, "log") == 0){
-				
+				if(stringToDouble(substr(formula, 1, strlen(formula) - 2)) <= 0){
+					return "error"; // log < 0
+				}
 			}
 			formula = postfix(formula);
 			double result = calculate(op, formula);
 			
-			
-
 			char *lastExp = (char *)calloc(sizeof(char), 100);
 			strcpy(lastExp, subExp + tmpIndex);
 			memset(subExp, 0, strlen(subExp));
