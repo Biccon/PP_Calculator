@@ -1,12 +1,12 @@
 #include <math.h>
-void trim(char *input);
+char *trim(char *input);
 char *inputExpression();
 char *assignExpression(char *exp);
 double calc(char *exp);
 double calculate(char *operator, char *expression);
 char *replaceExpression(char *exp);
 
-void trim(char *input) {
+char *trim(char *input) {
 	char *dst = input, *src = input;
 	char *end;
 
@@ -22,6 +22,8 @@ void trim(char *input) {
 	if (src != dst) {
 	  while ((*dst++ = *src++));
 	}
+
+	return input;
 }
 
 char *inputExpression(){
@@ -48,7 +50,7 @@ char *inputExpression(){
 	int len = strlen(expression) - strlen(strstr(expression, "CAL"));
 	strncpy(expression, expression, len);
 	memset(expression+len, 0, sizeof(char) * 300 - len); // 식 뒤 부분을 null로 만들다
-	return expression; // 식 반환
+	return trim(expression); // 식 반환 및 공백 제거
 }
 
 char *assignExpression(char *exp){
@@ -149,6 +151,7 @@ char *replaceExpression(char *exp){
 			char *formula = (char *)calloc(sizeof(char), 100);
 			formula = getExpression(subExp);	
 			formula = replaceExpression(formula);
+			
 			printf("식변환 %s\n", formula);
 			if(!isExpRight(formula) || !hasOperatorBetweenNumber(formula) || isDivZero(formula))
 				return "error";

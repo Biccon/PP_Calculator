@@ -15,7 +15,6 @@
 int main(int argc, char **argv){
 	char *exp;
 	exp = inputExpression();
-	trim(exp); 
 	printf("%s\n", exp);
 	if(!ParenMatch(exp)){
 		printf("괄호 쌍이 맞지 않음\n");
