@@ -8,6 +8,7 @@
 #include <string.h>
 #include <math.h>
 #include "stack.h"
+#include "linkedlist.h"
 #include "error.h"
 #include "postfix.h"
 #include "calc.h"
