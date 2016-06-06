@@ -33,7 +33,7 @@ char *inputExpression(){
 	while (1) {
 		char *input = (char *)malloc(sizeof(char) * 30);
 		scanf("%s", input); // 사용자 입력
-		strcat(expression, input); // 입력받은 수식을 뒤에 갖다 붙인다
+		strcat(expression, trim(input)); // 입력받은 수식을 뒤에 갖다 붙인다
 		free(input);
 		
 		isCal = strstr(expression, "CAL");
@@ -50,7 +50,7 @@ char *inputExpression(){
 	int len = strlen(expression) - strlen(strstr(expression, "CAL"));
 	strncpy(expression, expression, len);
 	memset(expression+len, 0, sizeof(char) * 300 - len); // 식 뒤 부분을 null로 만들다
-	return trim(expression); // 식 반환 및 공백 제거
+	return expression; // 식 반환 및 공백 제거
 }
 
 char *assignExpression(char *exp){
