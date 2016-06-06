@@ -178,7 +178,7 @@ char *replaceExpression(char *exp){
 				return "error";
 			else if(strcmp(oper, "log") == 0 && atof(substr(formula, 1, strlen(formula) - 2)) <= 0)
 					return "error"; // log < 0
-
+			
 			formula = postfix(formula);
 			double result = calculate(op, formula);
 			

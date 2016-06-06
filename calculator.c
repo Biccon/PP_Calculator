@@ -19,7 +19,6 @@ int main(int argc, char **argv){
 		exp = inputExpression();
 		if(strcmp(exp, "EXIT") == 0)
 			break;
-		printf("%s\n", exp);
 		if(!ParenMatch(exp)){
 			printf("괄호 쌍이 맞지 않음\n");
 		} else {
@@ -28,7 +27,6 @@ int main(int argc, char **argv){
 				
 			*/
 			exp = replaceExpression(exp);
-			printf("%s\n", exp);
 			printf("%d %d %d\n", isExpRight(exp), hasOperatorBetweenNumber(exp), isDivZero(exp));
 			if(hasError(exp)){
 				printf("에러 발생\n");
