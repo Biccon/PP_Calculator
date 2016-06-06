@@ -130,7 +130,7 @@ char *replaceExpression(char *exp){
 			formula = getExpression(subExp);	
 			formula = replaceExpression(formula);
 			printf("식변환 %s\n", formula);
-			if(!isExpRight(formula) || !hasOperatorBetweenNumber(formula))
+			if(!isExpRight(formula) || !hasOperatorBetweenNumber(formula) || isDivZero(formula))
 				return "error";
 			printf("오류체크\n");
 			/*
