@@ -46,7 +46,7 @@ int isDivZero(char *exp){ //바꾸기 전 expression을 검사하는 함수
 }
 
 int hasError(char *exp){
-    return !(isExpRight(exp) && hasOperatorBetweenNumber(exp) && !isDivZero(exp));
+    return (!(isExpRight(exp) && hasOperatorBetweenNumber(exp) && !isDivZero(exp))) || (strcmp(exp, "error") == 0);
 }
 
 int hasOperatorBetweenNumber(char * exp) {

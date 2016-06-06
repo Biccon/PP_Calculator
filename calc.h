@@ -152,7 +152,9 @@ char *replaceExpression(char *exp){
 			formula = getExpression(subExp);	
 			formula = replaceExpression(formula);
 			
-			printf("식변환 %s\n", formula);
+			printf("식변환 |%s|\n", formula);
+			if(strcmp(formula, "") == 0)
+				return "error";
 			if(hasError(formula))
 				return "error";
 			printf("오류체크\n");

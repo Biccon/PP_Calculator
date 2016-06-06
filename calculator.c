@@ -10,7 +10,6 @@
 #include "error.h"
 #include "postfix.h"
 #include "calc.h"
-#define PI 3.14159265359
 
 int main(int argc, char **argv){
 	char *exp;
@@ -19,15 +18,18 @@ int main(int argc, char **argv){
 	if(!ParenMatch(exp)){
 		printf("괄호 쌍이 맞지 않음\n");
 	} else {
-//		exp = assignExpression(exp);
+		/*
+			exp = assignExpression(exp); // 를 해준 뒤에 할당 오류가 발생하지 않았는지 check
+			
+		*/
 		exp = replaceExpression(exp);
 		printf("%s\n", exp);
 		printf("%d %d %d\n", isExpRight(exp), hasOperatorBetweenNumber(exp), isDivZero(exp));
-		if(!hasError(exp)){
+		if(hasError(exp)){
+			printf("에러 발생\n");
+		} else {
 			exp = postfix(exp);
 			printf("결과값 = %lf\n", calc(exp));
-		} else {
-			printf("에러 발생\n");
 		}
 	}
 }
