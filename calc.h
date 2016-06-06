@@ -170,20 +170,15 @@ char *replaceExpression(char *exp){
 			int tmpIndex = getIndexOutOfExpression(subExp);
 			char *formula = (char *)calloc(sizeof(char), 100);
 			formula = getExpression(subExp);
-			printf("getE : %s\n", formula);
 			formula = replaceExpression(formula);
-			
-			printf("식변환 |%s|\n", formula);
 			
 			if(strcmp(formula, "") == 0 || strcmp(formula, "()") == 0) // 뒤에 ()가 없거나 () 안에 식이 들어있지 않을 경우 error
 				return "error";
 			else if(hasError(formula))
 				return "error";
-			else if(strcmp(oper, "log") == 0){
-				if(stringToDouble(substr(formula, 1, strlen(formula) - 2)) <= 0){
+			else if(strcmp(oper, "log") == 0 && atof(substr(formula, 1, strlen(formula) - 2)) <= 0)
 					return "error"; // log < 0
-				}
-			}
+
 			formula = postfix(formula);
 			double result = calculate(op, formula);
 			
