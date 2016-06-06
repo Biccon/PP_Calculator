@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "stack.h"
 #include "error.h"
 #include "postfix.h"
@@ -13,6 +14,7 @@
 
 int main(int argc, char **argv){
 	while(1){
+		printf("Input Expression (종료 EXIT 계산 CAL)\n");
 		char *exp;
 		exp = inputExpression();
 		if(strcmp(exp, "EXIT") == 0)
