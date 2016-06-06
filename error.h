@@ -1,4 +1,18 @@
 static int dot = 0;
+int isNumberExpression(char *exp){
+	int numberExpression = false;
+	int expLen = strlen(exp);
+	int i;
+	char tok;
+	for(i=0;i<expLen;i++){
+		tok = exp[i];
+		if(('0' <= tok && tok <= '9') || tok == '.')
+			continue;
+		else
+			return false;
+	}
+	return numberExpression;
+}
 
 int isDivZero(char *exp){ //바꾸기 전 expression을 검사하는 함수
     int expLen = strlen(exp);
@@ -298,6 +312,6 @@ int onlyNumber(int i, char *exp)
          }
       }
    }
-   return true;
-            
+   return true;            
 }
+
