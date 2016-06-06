@@ -4,10 +4,7 @@ typedef struct LinkedList LinkedList;
 struct Node
 {
 	char name[30];
-	union {
-		double result;
-		char data[100];
-	}
+	double data;
 	struct Node *next;
 	struct Node *prev;
 };
@@ -24,14 +21,14 @@ void init(LinkedList *list);
 int get_size(LinkedList *list);
 int Get_ListCount();
 
-Node *add_before(Node *node, char *data, char *name);
-Node *add_last(LinkedList *list, char *data, char *name);
+Node *add_before(Node *node, char *name, double data);
+Node *add_last(LinkedList *list, char *name, double data);
 
 void remove_node(Node *node);
 
 Node *Find_Node_By_Index(LinkedList *list, int i);
 Node *get_node_by_name(LinkedList *list, char *name);
-int Get_NodeIndex(Node *node);
+int Get_NodeIndex(LinkedList *list, Node *node);
 
 void printList(LinkedList *list);
 
@@ -74,11 +71,10 @@ int Get_ListCount()
      return count;
 }
 
-node *add_before(Node *node, char *data, char *name)
-{ 
+Node *add_before(Node *node, char *name, double data){ 
      Node *newNode = (Node *)malloc(sizeof(Node)); 
 	 strcpy(newNode -> name, name);
-     strcpy(newNode -> data, data); 
+     newNode -> data = data;
      newNode -> prev = node -> prev; 
      newNode -> next = node; 
       
@@ -87,9 +83,9 @@ node *add_before(Node *node, char *data, char *name)
      return newNode; 
  } 
 
-Node *add_last(LinkedList *list, char *data, char *name)
+Node *add_last(LinkedList *list, char *name, double data)
 { 
-     return add_before(list -> tail, data, name); 
+     return add_before(list -> tail, name, data); 
  } 
 
 void remove_node(Node *node)
@@ -149,11 +145,11 @@ int Get_NodeIndex(LinkedList *list, Node *node)
 	return -1;
 }
 
-Node *find_node(LinkedList *list, char *data, char *name)
+Node *find_node(LinkedList *list, char *name)
 {
 	Node *temp;
 	temp = head->next;
-	while(temp->data != data && temp != tail && temp -> name != name)
+	while(temp != tail && strcmp(temp -> name, name) != 0)
 	{
 		temp = temp->next;
 	}
@@ -166,7 +162,7 @@ void printList(LinkedList *list)
 
 	while(NewNode != list ->tail)
 	{
-		printf("%s ", NewNode->data);
+		printf("%lf ", NewNode->data);
 		NewNode = NewNode -> next;
 	}
 }

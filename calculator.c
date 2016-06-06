@@ -8,10 +8,10 @@
 #include <string.h>
 #include <math.h>
 #include "stack.h"
-#include "linkedlist.h"
 #include "error.h"
 #include "postfix.h"
 #include "calc.h"
+#include "linkedlist.h"
 
 int main(int argc, char **argv){
 	while(1){
