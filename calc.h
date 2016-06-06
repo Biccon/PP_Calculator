@@ -160,10 +160,14 @@ char *replaceExpression(char *exp){
 				return "error";
 			else if(hasError(formula))
 				return "error";
-			printf("오류체크\n");
+			else if(strcmp(oper, "log") == 0){
+				
+			}
 			formula = postfix(formula);
 			double result = calculate(op, formula);
 			
+			
+
 			char *lastExp = (char *)calloc(sizeof(char), 100);
 			strcpy(lastExp, subExp + tmpIndex);
 			memset(subExp, 0, strlen(subExp));
