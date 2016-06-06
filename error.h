@@ -1,4 +1,40 @@
 static int dot = 0;
+
+int isDivZero(char *exp){ //바꾸기 전 expression을 검사하는 함수
+    int expLen = strlen(exp);
+    int i;
+    int divZero = false;
+    char tok;
+    for(i=0;i<expLen;i++){
+        tok = exp[i];
+        if(tok == ' ')
+            continue;
+        if(tok == '/'){ // 나누기 연산이 나왔을 때
+            char temp = exp[++i]; //다음 문자를 temp에 넣어본다
+            char number[30] = ""; 
+            while(('0' <= temp && temp <= '9' || temp == '.')){ // 다른 문자가 나올 때까지가 / 연산 뒤에 나오는 숫  자
+                if(temp == ' ') // 공백은 넘기고
+                    continue;
+                char n[1];
+                sprintf(n, "%c", temp); // calc와 같은 방식으로 n[]에 char로 tok를 넣는다
+                strcat(number, n); 
+                i++;
+                temp = exp[i]; // i++
+            }   
+            printf("%s\n", number);
+            double totalNum = atof(number);
+            if(totalNum == 0)
+                return true;
+        }   
+            //  if('0' <= tok && tok <= '9' )
+    }   
+    return false;
+}
+
+int hasError(char *exp){
+    return !(isExpRight(exp) && hasOperatorBetweenNumber(exp) && !isDivZero(exp));
+}
+
 int hasOperatorBetweenNumber(char * exp) {
 	int expLen = strlen(exp);
 	char *transexp = (char *)malloc(expLen+1);

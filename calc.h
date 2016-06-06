@@ -1,9 +1,29 @@
 #include <math.h>
+void trim(char *input);
 char *inputExpression();
 char *assignExpression(char *exp);
 double calc(char *exp);
 double calculate(char *operator, char *expression);
 char *replaceExpression(char *exp);
+
+void trim(char *input) {
+	char *dst = input, *src = input;
+	char *end;
+
+	while (isspace((unsigned char)*src)) {
+	  ++src;
+	}
+
+	end = src + strlen(src) - 1;
+	while (end > src && isspace((unsigned char)*end)) {
+	  *end-- = 0;
+	}
+
+	if (src != dst) {
+	  while ((*dst++ = *src++));
+	}
+}
+
 char *inputExpression(){
 	char *expression = (char *)calloc(sizeof(char), 300);
 	char *isCal;
