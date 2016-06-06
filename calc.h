@@ -130,12 +130,17 @@ char *replaceExpression(char *exp){
 			formula = getExpression(subExp);	
 			formula = replaceExpression(formula);
 			printf("식변환 %s\n", formula);
-			int r = isExpRight(formula);
-			printf("r : %d\n", r);
-			int h = hasOperatorBetweenNumber(formula);
-			printf("h : %d\n", h);
-			printf("이프문 끝\n");
-			printf("%s\n", formula);
+			if(!isExpRight(formula) || !hasOperatorBetweenNumber(formula))
+				return "error";
+			printf("오류체크\n");
+			/*
+			if(isExpRight(formula) == false){
+				return "error 1";
+			}
+			if(hasOperatorBetweenNumber(formula) == false){
+				return "error 2";
+			}
+			*/
 			formula = postfix(formula);
 			double result = calculate(op, formula);
 			
@@ -144,9 +149,9 @@ char *replaceExpression(char *exp){
 			memset(subExp, 0, strlen(subExp));
 			sprintf(subExp, "(%lf)%s", result, lastExp);
 			
-			free(op);
-			free(formula);
-			free(lastExp);
+//			free(op);
+//			free(formula);
+//			free(lastExp);
 		}
 		oper = strtok(NULL, "/");
 	}

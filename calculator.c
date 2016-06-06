@@ -67,26 +67,13 @@ int errorCheck(char *exp){
 int main(int argc, char **argv){
 	char *exp;
 	exp = inputExpression();
-//	exp = postfix(exp);
-//	printf("%lf\n", calc(exp));
-	//printf("%s\n", exp);
-	//if(errorCheck(exp)){
-		//printf("%s\n", exp);
-		exp = replaceExpression(exp);
-		if(strcmp(exp, "divZero") == 0){
-			printf("divZero\n");
-			exit(1);
-		}
+	exp = replaceExpression(exp);
+	printf("%s\n", exp);
+	printf("%d %d %d\n", isExpRight(exp), hasOperatorBetweenNumber(exp), isDivZero(exp));
+	if(isExpRight(exp) && hasOperatorBetweenNumber(exp) && !isDivZero(exp)){
 		exp = postfix(exp);
-		//char *temp = getExpression(exp);
-		//printf("%s\n", temp);
-		printf("%lf\n", calc(exp));
-//	} else {
-//		printf("에러\n");
-//	}
-	//printf("%d\n", ParenMatch(temp));
-	//assignExpression(temp);
-	//printf("%s\n", postfix(temp));
-	//replaceExpression(temp);
-	//printf("%s\n", temp);
+		printf("결과값 = %lf\n", calc(exp));
+	} else {
+		printf("에러 발생\n");
+	}
 }
