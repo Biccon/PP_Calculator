@@ -1,0 +1,267 @@
+static int dot = 0;
+int hasOperatorBetweenNumber(char * exp) {
+	int expLen = strlen(exp);
+	char *transexp = (char *)malloc(expLen+1);
+	int i, temp;
+	int flag = 0; //flag = -1이면 return 0
+	int idx = 0;
+	char tok;
+
+	for(i = 0; i < expLen; i++) {
+		tok = exp[i];
+		if('0' <= tok && tok <= '9') {
+			transexp[idx++] = '|'; //숫자 구분
+			temp = tok;
+			while('0' <= temp && temp <= '9' || temp == '.') {
+				transexp[idx++] = temp;
+				i++;
+				temp = exp[i];
+			}
+			transexp[idx++] = '|';
+			i--;
+		}
+		else {
+			transexp[idx++] = tok;
+		}
+	} //여기까지 ㅣ숫자ㅣ수식만듬
+
+	for(i = 0; i < idx; i++) {
+		if(i == idx-1)
+			break; //i+1은 idx에 포함되지 않으므로
+		if(transexp[i] == '|' && transexp[i+1] == '(') //ㅣ숫자ㅣ(숫자)
+			flag = -1;
+		if(transexp[i] == ')' && transexp[i+1] == '|') //(숫자)ㅣ숫자ㅣ
+			flag = -1;
+		if(transexp[i] == ')' && transexp[i+1] == '(') //(숫자)(숫자)
+			flag = -1; 
+	}
+
+	if(flag == -1)
+		return 0;
+	else
+		return 1;
+
+}
+
+int isExpRight(char *exp) 
+{
+   int i, j;
+   int k;
+   dot = 0;
+   int num = 0;
+   int match_num = 0;
+   int length = strlen(exp);
+   int error = false;
+   char tok;
+   Stack stack;
+
+   init_stack(&stack);
+
+   for (i = 0; i < length; i++)
+   {
+      tok = exp[i];
+      if (tok == ' ')
+      {
+         continue;
+      }
+      else if (onlyNumber(i,exp)==0)
+      {
+         if (dot >= 2)
+         {
+            return false;
+         }
+      }
+      else if (tok == '+' || tok == '-'||tok=='*'||tok=='/')
+      {
+         if (i == 0) //
+         {
+            return false;
+         }
+         else if (i == length - 1)
+         {
+            return false;
+         }
+         else
+         {
+            char temp = exp[i - 1];
+            if (tok == ' ')
+            {
+               continue;
+            }
+            else if (temp=='(')
+            {
+               init_stack(&stack);
+               num = 0;
+               match_num++;
+
+               if (tok == '*' || tok == '/')
+               {
+                  return false;
+               }
+               char temp2 = exp[i+1];
+               
+               if (temp2 == '(')
+               {
+                  i++;
+                  if(onlyNumber(i, exp) == 0)
+                  {
+                     if (dot >= 2)
+                     {
+                        return false;
+                     }
+                     continue;
+                  }
+                  else
+                  {
+                     return false;
+                  }
+               }
+               else if (temp2 == '[')
+               {
+                  i++;
+                  tok = exp[i + 1];
+                  char temp3 = exp[i + 3];
+                  if (temp3 == '+' || temp3 == '-'||temp3=='/'||temp3=='*')
+                  {
+                     return false;
+                  }
+                  printf("%c\n", tok);
+                  continue;
+
+               }
+               while (temp2 != ')')
+               {
+                  
+                  init_stack(&stack);
+                  num = 0;
+                  if (('0' <= temp2&&temp2 <= '9')||temp2=='.')
+                  {
+                     if (temp2 == '.')
+                     {
+                        dot++;
+                        if (dot >= 2)
+                        {
+                           return false;
+                        }
+                     }
+                     push(&stack, temp2);
+                     i++;
+                     temp2 = exp[i + 1];
+                     num++;
+                  }
+                  else if (temp2 == '+' || temp2 == '-' || temp2 == '*' || temp2 == '/')
+                  {
+                     return false;
+                  }
+               }
+               if (num == size(&stack))
+               {
+                  continue;
+               }
+            }
+            else if ('0' <= temp&&temp <= '9')
+            {
+               char temp2 = exp[i + 1];
+               if ('0' <= temp2&&temp2 <= '9')
+               {
+                  continue;
+               }
+               else if (temp2 == ')')
+               {
+                  return false;
+               }
+               else if (temp2 == '(')
+               {
+                  i++;
+                  continue;
+               }
+            }
+            else if (temp == ')') 
+            {
+               char temp2 = exp[i + 1];
+               if ('0' <= temp2&&temp2 <= '9')
+               {
+                  continue;
+               }
+               else if (temp2 == '(')
+               {
+                  i++;
+                  continue;
+               }
+            }
+            else if (temp == ']')
+            {
+               char temp2 = exp[i + 1];
+               if (temp2 == '(')
+               {
+                  i++;
+                  continue;
+               }
+               continue;
+            }
+            else
+            {
+               return false;
+            }
+         }
+      }
+   }
+   return true;
+}
+
+
+int onlyNumber(int i, char *exp) 
+{
+   int length = strlen(exp);
+   char tok;
+   dot = 0;
+   int num = 0;
+   Stack stack;
+   init_stack(&stack);
+
+   for (i; i < length; i++)
+   {
+      tok = exp[i];
+      if (tok == ' ')
+      {
+         continue;
+      }
+      else if (tok == '(')
+      {
+         char temp2 = exp[i - 1];
+         char temp = exp[i + 1];
+         while (temp != ')')
+         {
+            if (('0' <= temp&&temp <= '9')||temp=='.')
+            {
+               if (temp == '.')
+               {
+                  dot++;
+                  if (dot >= 2)
+                  {
+                     return false;
+                  }
+               }
+               push(&stack, temp);
+               num++;
+            }
+            else if (temp == '+' || temp == '-' || temp == '*' || temp == '/')
+            {
+               num++;
+            }
+            i++;
+            temp = exp[i + 1];
+         }
+         if (num == size(&stack))
+         {
+            return false;
+         }
+         else
+         {
+            continue;
+         }
+      }
+   }
+   return true;
+            
+}
