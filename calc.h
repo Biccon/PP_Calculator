@@ -124,14 +124,16 @@ double calc(char *exp){
 double calculate(char *operator, char *expression){
 	double result = calc(expression);
 	if(strcmp(operator, "sin") == 0){
-		return sin(result);
+		result = sin(result);
 	} else if(strcmp(operator, "cos") == 0){
-		return cos(result);
+		result = cos(result);
 	} else if(strcmp(operator, "exp") == 0){
-		return exp(result);
+		result = exp(result);
 	} else if(strcmp(operator, "log") == 0){
-		return log(result);
+		result = log(result);
 	}
+
+	return result;
 }
 
 char *replaceExpression(char *exp){
