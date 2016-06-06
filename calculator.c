@@ -67,13 +67,17 @@ int errorCheck(char *exp){
 int main(int argc, char **argv){
 	char *exp;
 	exp = inputExpression();
-	exp = replaceExpression(exp);
-	printf("%s\n", exp);
-	printf("%d %d %d\n", isExpRight(exp), hasOperatorBetweenNumber(exp), isDivZero(exp));
-	if(isExpRight(exp) && hasOperatorBetweenNumber(exp) && !isDivZero(exp)){
-		exp = postfix(exp);
-		printf("결과값 = %lf\n", calc(exp));
+	if(!ParenMatch(exp)){
+		printf("괄호 쌍이 맞지 않음\n");
 	} else {
-		printf("에러 발생\n");
+		exp = replaceExpression(exp);
+		printf("%s\n", exp);
+		printf("%d %d %d\n", isExpRight(exp), hasOperatorBetweenNumber(exp), isDivZero(exp));
+		if(isExpRight(exp) && hasOperatorBetweenNumber(exp) && !isDivZero(exp)){
+			exp = postfix(exp);
+			printf("결과값 = %lf\n", calc(exp));
+		} else {
+			printf("에러 발생\n");
+		}
 	}
 }
