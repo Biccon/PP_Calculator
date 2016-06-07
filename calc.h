@@ -140,13 +140,11 @@ char *assignExpression(char *exp){
 				char *name = (char*)malloc(sizeof(char)*2);
 				sprintf(name, "%c", *(temp+1));
 				
-				// check register
+				// check register expression에 정의되지 않은 register이 쓰인 경우 오류
 				if(!Registe_Right(reg, expression))
 					return "error";
 				expression = replaceRegister(reg, expression);
-				printf("rep %s\n", expression);
 				expression = replaceExpression(expression);
-				printf("replaceExpression : %s\n", expression);
 				if(hasError(expression))
 					return "error";
 				else {
@@ -191,7 +189,6 @@ double calc(char *exp){
 				temp = exp[i];
 			}
 			push(&stack, atof(number));
-			// tok == |이고 exp[i+1]도 바로 |인 경우가 있을 숭 ㅣㅆ나? 있으면 오류
 		} else {
 			op2 = pop(&stack);
 			op1 = pop(&stack);
