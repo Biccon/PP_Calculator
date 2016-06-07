@@ -49,17 +49,13 @@ int main(int argc, char **argv){
 				if(Registe_Right(reg, exp) == false)
                     printf("에러 발생222\n");
 				else {
-					printf("%s\n", exp);
 					exp = replaceRegister(reg, exp);
-					printf("%s\n", exp);
 					exp = replaceExpression(exp);
-					printf("%s\n", exp);
 					//printf("%d %d %d\n", isExpRight(exp), hasOperatorBetweenNumber(exp), isDivZero(exp));
 					if(hasError(exp)){
 						printf("에러 발생\n");
 					} else {
 						exp = postfix(exp);
-						printf("%s\n", exp);
 						printf("결과값 = %lf\n", calc(exp));
 					}
 				}
