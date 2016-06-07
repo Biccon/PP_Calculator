@@ -232,16 +232,13 @@ double calculate(char *operator, char *expression){
 
 char *replaceExpression(char *exp){
 	char *tempExp = (char *)calloc(sizeof(char), 300);
-	strcpy(tempExp, exp);
-	
-	//char find[] = "sin/cos/exp/log"; // 차례대로 나누어서 sin... log까지에 대한 결과값을 계산해줄것
-	
-	char *ops = (char*)malloc(sizeof(char) * 16);//strtok(find, "/"); // 찾아줄 operator들을 strtok로 구분지어 하나씩 찾아주자
-	strcpy(ops, "sin/cos/exp/log");
+	char *ops = (char*)malloc(sizeof(char) * 16);
 	char *oper;
+	strcpy(tempExp, exp);
+	strcpy(ops, "sin/cos/exp/log");
+	// 기존 방식은 strtok로 해줬는데 재귀로 하면서 strtok(NULL, "/")할때 문제가 발생했다. 해결해주기위해서 각자 다른 포인터를 사용
+	// 각기 다른 포인터를 사용함으로써 재귀호출이 되어도 그것에 상관이 없게 되었음
 	while((oper = substr(ops, 0, 3))){
-		printf("ops : %s\n", ops);
-		printf("Oper : %s\n", oper);
 		char *subExp;
 		while((subExp = strstr(tempExp, oper))){
 			int tmpIndex = getIndexOutOfExpression(subExp);
@@ -249,9 +246,11 @@ char *replaceExpression(char *exp){
 			formula = getExpression(subExp);
 			formula = replaceExpression(formula);
 			
-			if(hasError(formula))
+			if(strcmp(formula, "") == 0 || strcmp(formula, "()") == 0 || hasError(formula))
 				return "error";
-
+			else if(strcmp(oper, "log") == 0 && atof(substr(formula, 1, strlen(formula) -2)) <= 0)
+				return "error";
+			
 			formula = postfix(formula);
 			double result = calculate(oper, formula);
 
@@ -261,42 +260,8 @@ char *replaceExpression(char *exp){
 			
 			sprintf(subExp, "(%lf)", result);
 			sprintf(subExp + strlen(subExp), "%s", lastExp);
-			printf("s %s\n", subExp);
-			printf("t %s\n", tempExp);
 		}
-		
-		/*
-		char *subExp; // 현재 찾고있는 oper의 뒷부분을 변경해 줄 것이다
-		while((subExp = strstr(tempExp, oper))){ // strstr을 이용해 subExp에서 가리킨다
-			printf("Sub Exp : %s\n", subExp);
-			char *op = (char *)calloc(sizeof(char), 4); // 어짜피 3글자씩이니까 숫자 고정
-			strncpy(op, subExp, 3); // 마찬가지
-			
-			int tmpIndex = getIndexOutOfExpression(subExp);
-			char *formula = (char *)calloc(sizeof(char), 100);
-			formula = getExpression(subExp);
-			formula = replaceExpression(formula);
-			
-			if(strcmp(formula, "") == 0 || strcmp(formula, "()") == 0) // 뒤에 ()가 없거나 () 안에 식이 들어있지 않을 경우 error
-				return "error";
-			else if(hasError(formula))
-				return "error";
-			else if(strcmp(oper, "log") == 0 && atof(substr(formula, 1, strlen(formula) - 2)) <= 0)
-					return "error"; // log < 0
-			
-			formula = postfix(formula);
-			double result = calculate(op, formula);
-			
-			char *lastExp = (char *)calloc(sizeof(char), 100);
-			strcpy(lastExp, subExp + tmpIndex);
-			memset(subExp-1, 0, strlen(subExp));
-			sprintf(subExp, "(%lf)%s", result, lastExp);
-			printf("tempExp : %s\n", tempExp);
-		}
-		printf("Oper : %s %s\n", oper, tempExp);
-		*/
 		ops = ops + 4;
-	//	oper = strtok(NULL, "/");
 	}
 	return tempExp;
 }
