@@ -98,7 +98,6 @@ char *inputExpression(){
 			return "EXIT"; // EXIT리턴
 	}
 	int len = strlen(expression) - strlen(strstr(expression, "CAL"));
-	strncpy(expression, expression, len);
 	memset(expression+len, 0, sizeof(char) * 300 - len); // 식 뒤 부분을 null로 만들다
 	return expression; // 식 반환 및 공백 제거
 }
@@ -145,7 +144,9 @@ char *assignExpression(char *exp){
 				if(!Registe_Right(reg, expression))
 					return "error";
 				expression = replaceRegister(reg, expression);
+				printf("rep %s\n", expression);
 				expression = replaceExpression(expression);
+				printf("replaceExpression : %s\n", expression);
 				if(hasError(expression))
 					return "error";
 				else {
@@ -232,14 +233,43 @@ double calculate(char *operator, char *expression){
 char *replaceExpression(char *exp){
 	char *tempExp = (char *)calloc(sizeof(char), 300);
 	strcpy(tempExp, exp);
-
-	char find[] = "sin/cos/exp/log"; // 차례대로 나누어서 sin... log까지에 대한 결과값을 계산해줄것
 	
-	char *oper = strtok(find, "/"); // 찾아줄 operator들을 strtok로 구분지어 하나씩 찾아주자
-	while(oper){
+	//char find[] = "sin/cos/exp/log"; // 차례대로 나누어서 sin... log까지에 대한 결과값을 계산해줄것
+	
+	char *ops = (char*)malloc(sizeof(char) * 16);//strtok(find, "/"); // 찾아줄 operator들을 strtok로 구분지어 하나씩 찾아주자
+	strcpy(ops, "sin/cos/exp/log");
+	char *oper;
+	while((oper = substr(ops, 0, 3))){
+		printf("ops : %s\n", ops);
+		printf("Oper : %s\n", oper);
+		char *subExp;
+		while((subExp = strstr(tempExp, oper))){
+			int tmpIndex = getIndexOutOfExpression(subExp);
+			char *formula = (char *)calloc(sizeof(char), 100);
+			formula = getExpression(subExp);
+			formula = replaceExpression(formula);
+			
+			if(hasError(formula))
+				return "error";
+
+			formula = postfix(formula);
+			double result = calculate(oper, formula);
+
+			char *lastExp = (char *)calloc(sizeof(char), 100);
+			strcpy(lastExp, subExp + tmpIndex);
+			memset(subExp, 0, strlen(subExp));
+			
+			sprintf(subExp, "(%lf)", result);
+			sprintf(subExp + strlen(subExp), "%s", lastExp);
+			printf("s %s\n", subExp);
+			printf("t %s\n", tempExp);
+		}
+		
+		/*
 		char *subExp; // 현재 찾고있는 oper의 뒷부분을 변경해 줄 것이다
 		while((subExp = strstr(tempExp, oper))){ // strstr을 이용해 subExp에서 가리킨다
-			char *op = (char *)calloc(sizeof(char), 3); // 어짜피 3글자씩이니까 숫자 고정
+			printf("Sub Exp : %s\n", subExp);
+			char *op = (char *)calloc(sizeof(char), 4); // 어짜피 3글자씩이니까 숫자 고정
 			strncpy(op, subExp, 3); // 마찬가지
 			
 			int tmpIndex = getIndexOutOfExpression(subExp);
@@ -259,10 +289,14 @@ char *replaceExpression(char *exp){
 			
 			char *lastExp = (char *)calloc(sizeof(char), 100);
 			strcpy(lastExp, subExp + tmpIndex);
-			memset(subExp, 0, strlen(subExp));
+			memset(subExp-1, 0, strlen(subExp));
 			sprintf(subExp, "(%lf)%s", result, lastExp);
+			printf("tempExp : %s\n", tempExp);
 		}
-		oper = strtok(NULL, "/");
+		printf("Oper : %s %s\n", oper, tempExp);
+		*/
+		ops = ops + 4;
+	//	oper = strtok(NULL, "/");
 	}
 	return tempExp;
 }
