@@ -81,7 +81,7 @@ char *inputExpression(){
 	char *isCal;
 	char *isExit;
 	while (1) {
-		char *input = (char *)malloc(sizeof(char) * 30);
+		char *input = (char *)malloc(sizeof(char) * 100);
 		scanf("%s", input); // 사용자 입력
 		strcat(expression, trim(input)); // 입력받은 수식을 뒤에 갖다 붙인다
 		free(input);
@@ -103,7 +103,7 @@ char *inputExpression(){
 }
 
 char *replaceRegister(LinkedList *list, char *exp){
-	char *tempExp = (char*)malloc(sizeof(char)*300);
+	char *tempExp = (char*)malloc(sizeof(char) * 300);
 	strcpy(tempExp, exp);
 	int length = strlen(exp);
 	int i;
@@ -133,7 +133,7 @@ char *assignExpression(char *exp){
 		char *temp = substr(pos + strlen("->"), 0, 3);
 		
 		if(temp == NULL)
-			return "null";
+			return "error";
 		else {
 			// assign 변수 이름 유효성 체크
 			if(*(temp) == '[' && *(temp+2) == ']' && 'a' <= *(temp+1) && *(temp+1) <= 'z'){
@@ -167,11 +167,6 @@ double calc(char *exp){
 	char tok; 
 	double op1, op2;
 	
-	// 연산을 위한 stack.
-	// 연산 기호도 정수형으로 나타나므로(char형) double로 나타난 값과 같을 수 있음을 이용하여
-	// 소숫점 연산을 위해 스택을 char형에서 double형으로 바꿈.
-	// 사실 double짜리 스택을 새로 만들 수도 있겠ㅇ지만 어짜피 char -> double로의 casting에는 문제가 없으므로
-	// 스택의 자료형을 double로 바꾼 것.
 	init_stack(&stack);
 
 	for(i=0; i<expLen; i++){
