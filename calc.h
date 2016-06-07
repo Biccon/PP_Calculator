@@ -73,28 +73,36 @@ char *inputExpression(){
 
 char *assignExpression(char *exp){
 	char *tempExp = exp;
-	printf("Assign Exp : %s\n", exp);
 	char *pos;
 	while((pos = strstr(tempExp, "->"))){ // -> 포함하고있을때 나눠야함
-		printf("pos : %s\n", pos);
 		char *expression = substr(tempExp, 0, strlen(tempExp) - strlen(pos)); // -> 이전의 식
 		char *temp = substr(pos + strlen("->"), 0, 3);
 		
 		if(temp == NULL)
 			return "null";
 		else {
-			if(*(temp) == '[' && *(temp+2) == ']'){
-				char name = *(temp+1);
-				printf("Name : %c\n", name);
+			// assign 변수 이름 유효성 체크
+			if(*(temp) == '[' && *(temp+2) == ']' && 'a' <= *(temp+1) && *(temp+1) <= 'z'){
+				char *name = (char*)malloc(sizeof(char)*2);
+				sprintf(name, "%c", *(temp+1));
+				
+				// check register
+				expression = replaceExpression(expression);
+				if(hasError(expression))
+					return "error";
+				else {
+					expression = postfix(expression);
+					add_last(reg, name, calc(expression));
+					tempExp = pos + strlen("->") + 3;
+				}
 				// check error. (1) expression에 정의되지 않은 register이 사용됐는가?
 				// hasError돌려보기.
 				// 정의된 register이 있으면 그 값을 찾아서 식에 replace시켜주는 것 잊지않기
+			} else {
+				return "error";
 			}
-			printf("%s\n", expression);
-			printf("%s\n", temp);
 		}
-		break;
-		/*
+			/*
 		char tempList[2][30];
 		int temp = strlen(tempExp) - strlen(strstr(tempExp, "->"));
 		strncpy(tempList[0], tempExp, temp);

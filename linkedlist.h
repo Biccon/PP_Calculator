@@ -17,22 +17,6 @@ struct LinkedList
 	Node *tail;
 };
 
-void init(LinkedList *list);
-int get_size(LinkedList *list);
-int Get_ListCount();
-
-Node *add_before(Node *node, char *name, double data);
-Node *add_last(LinkedList *list, char *name, double data);
-
-void remove_node(Node *node);
-
-Node *Find_Node_By_Index(LinkedList *list, int i);
-Node *get_node_by_name(LinkedList *list, char *name);
-int Get_NodeIndex(LinkedList *list, Node *node);
-
-void printList(LinkedList *list);
-
-	
 void init(LinkedList *list)
 
 {
@@ -162,7 +146,7 @@ void printList(LinkedList *list)
 
 	while(NewNode != list ->tail)
 	{
-		printf("%lf ", NewNode->data);
+		printf("%s : %lf\n", NewNode->name, NewNode->data);
 		NewNode = NewNode -> next;
 	}
 }
