@@ -9,7 +9,8 @@ char *postfix(char *exp){
     
     int expLen = strlen(exp);
     char *postfix = (char *)calloc(sizeof(char), expLen + 100);
-    
+    int sign = -1;
+
     int i, idx = 0;
     char tok, popOp;
     
@@ -18,6 +19,12 @@ char *postfix(char *exp){
         tok = exp[i];
         if('0' <= tok && tok <= '9'){// 숫자가 나오면
             postfix[idx++] = '|'; // 그자리에 |를 넣어서 숫자임을 구분하자
+			if(sign == 0){
+				postfix[idx++] = '+';
+			} else if(sign == 1){
+				postfix[idx++] = '-';
+			}
+			sign = -1;
             int temp = tok; //현재 숫자를 temp에넣어두고
             while('0' <= temp && temp <= '9' || temp == '.'){
                 postfix[idx++] = temp;
@@ -41,6 +48,13 @@ char *postfix(char *exp){
                     break;
                 case '+':
                 case '-':
+					if(exp[i-1] == '(' && '0' <= exp[i+1] && exp[i+1] <= '9'){// && !isEmpty(&stack)){
+						if(tok == '+')
+							sign = 0;
+						else if(tok == '-')
+							sign = 1;
+						break;
+					}
                 case '*':
                 case '/':
                     while(!isEmpty(&stack) && cmpOpPriority(top(&stack), tok) >= 0){

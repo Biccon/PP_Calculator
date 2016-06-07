@@ -45,7 +45,6 @@ int main(int argc, char **argv){
 			} else {
 				exp = assignExpression(exp);
 				printList(reg);
-				printf("%d\n",Registe_Right(reg, exp));
 				if(Registe_Right(reg, exp) == false)
                     printf("에러 발생222\n");
 				else {

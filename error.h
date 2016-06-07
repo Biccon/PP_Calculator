@@ -50,17 +50,18 @@ int isDivZero(char *exp){ //바꾸기 전 expression을 검사하는 함수
             continue;
         if(tok == '/'){ // 나누기 연산이 나왔을 때
             char temp = exp[++i]; //다음 문자를 temp에 넣어본다
-            char number[30] = ""; 
-            while(('0' <= temp && temp <= '9' || temp == '.')){ // 다른 문자가 나올 때까지가 / 연산 뒤에 나오는 숫  자
-                if(temp == ' ') // 공백은 넘기고
-                    continue;
-                char n[1];
-                sprintf(n, "%c", temp); // calc와 같은 방식으로 n[]에 char로 tok를 넣는다
-                strcat(number, n); 
+            char *number = (char*)calloc(sizeof(char), 100); 
+            while(('0' <= temp && temp <= '9' || temp == '.') || temp == '(' || temp == ')' || temp == '-' || temp == '+'){ // 다른 문자가 나올 때까지가 / 연산 뒤에 나오는 숫  자
+                sprintf(number + strlen(number), "%c", temp); // calc와 같은 방식으로 n[]에 char로 tok를 넣는다
                 i++;
                 temp = exp[i]; // i++
-            }   
-            double totalNum = atof(number);
+            }
+			number = postfix(number);
+
+			printf("%s\n", number)
+            double totalNum = calc(number); //atof(number);
+			printf("Num : %lf\n", totalNum);
+			printf("%s\n", number);
             if(totalNum == 0)
                 return true;
         }   
