@@ -42,12 +42,8 @@ int main(int argc, char **argv){
 		if(!ParenMatch(exp)){
 			printf("괄호 쌍이 맞지 않음\n");
 		} else {
-			/*
-			   exp = assignExpression(exp);
-			printf("Ass : %s\n", exp);
+			exp = assignExpression(exp);
 			exp = replaceRegister(reg, exp);
-			printf("Rep : %s\n", exp);
-			*/
 			exp = replaceExpression(exp);
 			printf("Rep2 : %s\n", exp);
 			//printf("%d %d %d\n", isExpRight(exp), hasOperatorBetweenNumber(exp), isDivZero(exp));
