@@ -145,27 +145,6 @@ int isExpRight(char *exp)
       {
          continue;
       }
-      else if (onlyNumber(i,exp)==0)
-      {
-         char temp3 = exp[i + 1];
-         if (temp3 == ')')
-         { 
-            i++;
-            char temp4 = exp[i + 1];
-            if (temp4 == '+'||temp4=='-'||temp4=='/'||temp4=='*')
-            {
-               continue;
-            }
-            else
-            {
-               return false;
-            }
-         }
-         if (dot >= 2)
-         {
-            return false;
-         }
-      }
       else if (tok == '+' || tok == '-'||tok=='*'||tok=='/')
       {
          if (i == 0)
