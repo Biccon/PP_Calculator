@@ -237,7 +237,7 @@ char *replaceExpression(char *exp){
 			char *formula = (char *)calloc(sizeof(char), 100);
 			formula = getExpression(subExp);
 			formula = replaceExpression(formula);
-			
+			printf("formula : %s\n", formula);
 			if(strcmp(formula, "") == 0 || strcmp(formula, "()") == 0 || hasError(formula))
 				return "error";
 			else if(strcmp(oper, "log") == 0 && atof(substr(formula, 1, strlen(formula) -2)) <= 0)
