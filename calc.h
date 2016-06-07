@@ -44,6 +44,38 @@ char *trim(char *input) {
 	return input;
 }
 
+char *replaceAll(char *s, const char *olds, const char *news) {
+  char *result, *sr;
+  size_t i, count = 0;
+  size_t oldlen = strlen(olds); if (oldlen < 1) return s;
+  size_t newlen = strlen(news);
+
+
+  if (newlen != oldlen) {
+    for (i = 0; s[i] != '\0';) {
+      if (memcmp(&s[i], olds, oldlen) == 0) count++, i += oldlen;
+      else i++;
+    }
+  } else i = strlen(s);
+
+
+  result = (char *) malloc(i + 1 + count * (newlen - oldlen));
+  if (result == NULL) return NULL;
+
+
+  sr = result;
+  while (*s) {
+    if (memcmp(s, olds, oldlen) == 0) {
+      memcpy(sr, news, newlen);
+      sr += newlen;
+      s  += oldlen;
+    } else *sr++ = *s++;
+  }
+  *sr = '\0';
+
+  return result;
+}
+
 char *inputExpression(){
 	char *expression = (char *)calloc(sizeof(char), 300);
 	char *isCal;
@@ -71,30 +103,29 @@ char *inputExpression(){
 	return expression; // 식 반환 및 공백 제거
 }
 
-int Registe_Right(LinkedList *list, char *exp){
-	int i;
+char *replaceRegister(LinkedList *list, char *exp){
+	char *tempExp = (char*)malloc(sizeof(char)*300);
+	strcpy(tempExp, exp);
 	int length = strlen(exp);
+	int i;
 	char tok;
-
 	for(i=0;i<length;i++){
 		tok = exp[i];
-		if(tok == '[')
-		{
-			Node *NewNode = list -> head -> next;
-			char temp[10];
-			int j;
-			temp[0] = exp[++i];
-			while(NewNode != list -> tail){
-				if(strcmp(temp, NewNode -> name) == 0)
-					return true;
-				NewNode = NewNode -> next;
+		if(tok == '['){
+			char *name = (char*)malloc(sizeof(char)*2);
+			sprintf(name, "%c", exp[++i]);
+			Node *tempNode = get_node_by_name(list, name);
+			if(tempNode != NULL){
+				char oldData[10];
+				char replaceData[50];
+				sprintf(oldData, "[%c]", exp[i]);
+				sprintf(replaceData, "%lf", tempNode -> data);
+				tempExp = replaceAll(tempExp, oldData, replaceData);
 			}
-			return false;
 		}
 	}
-	return true;
+	return tempExp;
 }
-
 char *assignExpression(char *exp){
 	char *tempExp = exp;
 	char *pos;
@@ -111,7 +142,9 @@ char *assignExpression(char *exp){
 				sprintf(name, "%c", *(temp+1));
 				
 				// check register
-				printf("Chk : %d\n", Registe_Right(reg, expression));
+				if(!Registe_Right(reg, expression))
+					return "error";
+				expression = replaceRegister(reg, expression);
 				expression = replaceExpression(expression);
 				if(hasError(expression))
 					return "error";

@@ -32,8 +32,8 @@ void printList(LinkedList *list);
 
 int main(int argc, char **argv){
 	reg = (LinkedList*)malloc(sizeof(LinkedList));
-	init(reg);
 	while(1){
+		init(reg);
 		printf("Input Expression (종료 EXIT 계산 CAL)\n");
 		char *exp;
 		exp = inputExpression();
@@ -47,7 +47,7 @@ int main(int argc, char **argv){
 				
 			*/
 			exp = assignExpression(exp);
-			printList(reg);
+			exp = replaceRegister(reg, exp);
 			exp = replaceExpression(exp);
 			printf("%d %d %d\n", isExpRight(exp), hasOperatorBetweenNumber(exp), isDivZero(exp));
 			if(hasError(exp)){

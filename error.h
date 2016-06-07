@@ -1,4 +1,29 @@
 static int dot = 0;
+
+int Registe_Right(LinkedList *list, char *exp){
+    int i;
+    int length = strlen(exp);
+    char tok;
+
+    for(i=0;i<length;i++){
+        tok = exp[i];
+        if(tok == '[')
+        {   
+            Node *NewNode = list -> head -> next;
+            char temp[10];
+            int j;
+            temp[0] = exp[++i];
+            while(NewNode != list -> tail){
+                if(strcmp(temp, NewNode -> name) == 0)
+                    return true;
+                NewNode = NewNode -> next;
+            }   
+            return false;
+        }   
+    }   
+    return true;
+}
+
 int isNumberExpression(char *exp){
 	int numberExpression = false;
 	int expLen = strlen(exp);
