@@ -8,8 +8,7 @@ char *postfix(char *exp){
     Stack stack;
     
     int expLen = strlen(exp);
-    char *postfix = (char *)malloc(expLen + 1);
-    memset(postfix, 0, sizeof(char)*(expLen + 1));
+    char *postfix = (char *)calloc(sizeof(char), expLen + 100);
     
     int i, idx = 0;
     char tok, popOp;
