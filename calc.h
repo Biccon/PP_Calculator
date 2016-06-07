@@ -149,6 +149,9 @@ char *assignExpression(char *exp){
 					return "error";
 				else {
 					expression = postfix(expression);
+					Node *tempNode = get_node_by_name(reg, name);
+					if(tempNode != NULL)
+						remove_node(tempNode);
 					add_last(reg, name, calc(expression));
 					tempExp = pos + strlen("->") + 3;
 				}
@@ -237,7 +240,6 @@ char *replaceExpression(char *exp){
 			char *formula = (char *)calloc(sizeof(char), 100);
 			formula = getExpression(subExp);
 			formula = replaceExpression(formula);
-			printf("formula : %s\n", formula);
 			if(strcmp(formula, "") == 0 || strcmp(formula, "()") == 0 || hasError(formula))
 				return "error";
 			else if(strcmp(oper, "log") == 0 && atof(substr(formula, 1, strlen(formula) -2)) <= 0)
