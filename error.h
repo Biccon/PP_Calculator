@@ -74,47 +74,53 @@ int hasError(char *exp){
 }
 
 int hasOperatorBetweenNumber(char * exp) {
-	int expLen = strlen(exp);
-	char *transexp = (char *)malloc(expLen+1);
-	int i, temp;
-	int flag = 0; //flag = -1이면 return 0
-	int idx = 0;
-	char tok;
-
-	for(i = 0; i < expLen; i++) {
-		tok = exp[i];
-		if('0' <= tok && tok <= '9') {
-			transexp[idx++] = '|'; //숫자 구분
-			temp = tok;
-			while('0' <= temp && temp <= '9' || temp == '.') {
-				transexp[idx++] = temp;
-				i++;
-				temp = exp[i];
-			}
-			transexp[idx++] = '|';
+    int expLen = strlen(exp);
+    char *transexp = (char *)malloc(expLen+1);
+    int i, temp;
+    int flag = 0; //flag = -1이면 return 0
+    int idx = 0;
+    char tok;
+    
+    for(i = 0; i < expLen; i++) {
+        tok = exp[i];
+        if('0' <= tok && tok <= '9') {
+            transexp[idx++] = '|'; //숫자 구분
+            temp = tok;
+            while('0' <= temp && temp <= '9' || temp == '.') {
+                transexp[idx++] = temp;
+                i++;
+                temp = exp[i];
+            }
+            transexp[idx++] = '|';
 			i--;
-		}
-		else {
-			transexp[idx++] = tok;
-		}
-	} //여기까지 ㅣ숫자ㅣ수식만듬
-
-	for(i = 0; i < idx; i++) {
-		if(i == idx-1)
-			break; //i+1은 idx에 포함되지 않으므로
-		if(transexp[i] == '|' && transexp[i+1] == '(') //ㅣ숫자ㅣ(숫자)
-			flag = -1;
-		if(transexp[i] == ')' && transexp[i+1] == '|') //(숫자)ㅣ숫자ㅣ
-			flag = -1;
-		if(transexp[i] == ')' && transexp[i+1] == '(') //(숫자)(숫자)
-			flag = -1; 
-	}
-
-	if(flag == -1)
-		return 0;
-	else
-		return 1;
-
+        }
+        else {
+            transexp[idx++] = tok;
+        }
+    } //여기까지 ㅣ숫자ㅣ수식만듬
+    
+    for(i = 0; i < idx; i++) {
+        if(i == idx-1)
+            break; //i+1은 idx에 포함되지 않으므로
+        if(transexp[i] == '|' && transexp[i+1] == '(') //ㅣ숫자ㅣ(숫자)
+            flag = -1;
+        if(transexp[i] == ')' && transexp[i+1] == '|') //(숫자)ㅣ숫자ㅣ
+            flag = -1;
+        if(transexp[i] == ')' && transexp[i+1] == '(') //(숫자)(숫자)
+            flag = -1;
+        if(transexp[i] == ']' && transexp[i+1] == '[') //[x][x]
+            flag = -1;
+        if('0' <= transexp[i] && transexp[i] <= '9' && transexp[i+1] == '[') //숫자[x]
+            flag = -1;
+        if(transexp[i] == ']' && '0' <= transexp[i+1] && transexp[i+1] <= '9') //[x]숫자
+            flag = -1;
+    }
+    
+    if(flag == -1)
+        return 0;
+    else
+        return 1;
+    
 }
 
 int isExpRight(char *exp)
@@ -143,10 +149,19 @@ int isExpRight(char *exp)
       {
          char temp3 = exp[i + 1];
          if (temp3 == ')')
-         {
-            return false;
+         { 
+            i++;
+            char temp4 = exp[i + 1];
+            if (temp4 == '+'||temp4=='-'||temp4=='/'||temp4=='*')
+            {
+               continue;
+            }
+            else
+            {
+               return false;
+            }
          }
-         else if (dot >= 2)
+         if (dot >= 2)
          {
             return false;
          }
@@ -291,10 +306,22 @@ int isExpRight(char *exp)
                {
                   continue;
                }
-               else if (temp2 == '(')
+               if (temp2 == '(')
                {
-                  i++;
-                  continue;
+                  i++; 
+                  if (onlyNumber(i, exp) == 0)
+                  {
+                     char temp3 = exp[i + 1];
+                     if (temp3 == ')')
+                     {
+                        return false;
+                     }
+                     else if (dot >= 2)
+                     {
+                        return false;
+                     }
+                     continue;
+                  }
                }
             }
             else if (temp == ']') 
