@@ -117,13 +117,14 @@ int hasOperatorBetweenNumber(char * exp) {
 
 }
 
-int isExpRight(char *exp) 
+int isExpRight(char *exp)
 {
    int i, j;
    int k;
    dot = 0;
    int num = 0;
-   int match_num = 0;
+   int open_num = 0;
+   int close_num = 0;
    int length = strlen(exp);
    int error = false;
    char tok;
@@ -140,14 +141,19 @@ int isExpRight(char *exp)
       }
       else if (onlyNumber(i,exp)==0)
       {
-         if (dot >= 2)
+         char temp3 = exp[i + 1];
+         if (temp3 == ')')
+         {
+            return false;
+         }
+         else if (dot >= 2)
          {
             return false;
          }
       }
       else if (tok == '+' || tok == '-'||tok=='*'||tok=='/')
       {
-         if (i == 0) //
+         if (i == 0)
          {
             return false;
          }
@@ -157,7 +163,7 @@ int isExpRight(char *exp)
          }
          else
          {
-            char temp = exp[i - 1];
+            char temp = exp[i - 1]; 
             if (tok == ' ')
             {
                continue;
@@ -166,27 +172,53 @@ int isExpRight(char *exp)
             {
                init_stack(&stack);
                num = 0;
-               match_num++;
 
                if (tok == '*' || tok == '/')
                {
                   return false;
                }
                char temp2 = exp[i+1];
-               
                if (temp2 == '(')
                {
                   i++;
                   if(onlyNumber(i, exp) == 0)
                   {
-                     if (dot >= 2)
+                     char temp3 = exp[i + 1];
+                     if (temp3 == ')')
+                     {
+                        return false;
+                     }
+                     else if (dot >= 2)
                      {
                         return false;
                      }
                      continue;
                   }
                   else
-                  {
+                  {   
+                     char temp3 = exp[i + 1];
+                     while (temp3 != ')')
+                     {
+                        if (open_num != 0)
+                        {
+                           i++;
+                           temp3 = exp[i + 1];
+                        }
+                        if (temp3== '(')
+                        {
+                           open_num++;
+                        }
+                        i++;
+                        temp3 = exp[i + 1];
+                     }
+                     
+                     i++;
+                     char temp4 = exp[i + 1];
+                     if (temp3 == ')'&&temp4==')')
+                     {
+                        return true;
+
+                     }
                      return false;
                   }
                }
@@ -199,9 +231,7 @@ int isExpRight(char *exp)
                   {
                      return false;
                   }
-                  printf("%c\n", tok);
                   continue;
-
                }
                while (temp2 != ')')
                {
@@ -228,7 +258,11 @@ int isExpRight(char *exp)
                      return false;
                   }
                }
-               if (num == size(&stack))
+               if (size(&stack) == 0)
+               {
+                  return false;
+               }
+               else if (num == size(&stack))
                {
                   continue;
                }
@@ -263,7 +297,7 @@ int isExpRight(char *exp)
                   continue;
                }
             }
-            else if (temp == ']')
+            else if (temp == ']') 
             {
                char temp2 = exp[i + 1];
                if (temp2 == '(')
@@ -284,7 +318,7 @@ int isExpRight(char *exp)
 }
 
 
-int onlyNumber(int i, char *exp) 
+int onlyNumber(int i, char *exp)
 {
    int length = strlen(exp);
    char tok;
@@ -304,6 +338,7 @@ int onlyNumber(int i, char *exp)
       {
          char temp2 = exp[i - 1];
          char temp = exp[i + 1];
+      
          while (temp != ')')
          {
             if (('0' <= temp&&temp <= '9')||temp=='.')
@@ -326,7 +361,11 @@ int onlyNumber(int i, char *exp)
             i++;
             temp = exp[i + 1];
          }
-         if (num == size(&stack))
+         if (size(&stack) == 0)
+         {
+            return false;
+         }
+         else if (num == size(&stack))
          {
             return false;
          }
@@ -336,6 +375,6 @@ int onlyNumber(int i, char *exp)
          }
       }
    }
-   return true;            
+   return true;
+            
 }
-
